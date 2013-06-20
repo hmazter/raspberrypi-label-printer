@@ -4,4 +4,4 @@ raspberrypi-label-printer
 Raspberry pi label printer
 
 * Compile with: make
-* Use: PrintLabel <label image 1> <label image 2>
+* Use: PrintLabel &lt;label image 1&gt; &lt;label image 2&gt;
