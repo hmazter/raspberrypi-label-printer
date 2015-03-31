@@ -42,7 +42,7 @@ int main(int argc, char** argv)
   try
   {
     if (argc < 2)
-      throw Error("Usage: PrintLabel <Kid ImageName> <Parent ImageName>");
+      throw Error("Usage: PrintLabel <ImageName> [<ImageName> ...]");
     
     cout << "Printers:" << endl;
     print_printers();
@@ -50,21 +50,23 @@ int main(int argc, char** argv)
     int             num_options = 0;
     cups_option_t*  options = NULL;
     
-    num_options = cupsAddOption("PageSize", "w162h90", num_options, &options); //11354 Multi-Purpose
-    num_options = cupsAddOption("scaling", "100", num_options, &options);
+    //num_options = cupsAddOption("PageSize", "w162h90", num_options, &options); //11354 Multi-Purpose
+    num_options = cupsAddOption("PageSize", "w102h252", num_options, &options); //99012 Large address
+    //num_options = cupsAddOption("scaling", "100", num_options, &options);
     //num_options = cupsAddOption("orientation-requested", "4", num_options, &options);
-    num_options = cupsAddOption("DymoHalftoning", "ErrorDiffusion", num_options, &options);
+    //num_options = cupsAddOption("DymoHalftoning", "ErrorDiffusion", num_options, &options);
     //num_options = cupsAddOption("DymoPrintQuality", "Graphics", num_options, &options);
     
-    cupsPrintFile(PrinterName, argv[1], "Kids Label", num_options, options);
-    cupsPrintFile(PrinterName, argv[2], "Parent Label", num_options, options);
+    for (int i=1; i<argc; i++) {
+      cupsPrintFile(PrinterName, argv[i], "Label", num_options, options);
+    }
     cupsFreeOptions(num_options, options);
     
     return 0;
   }
   catch(std::exception& e)
   {
-    fprintf(stderr, e.what());
+    fprintf(stderr, "%s", e.what());
     fprintf(stderr, "\n");
     return 1;
   }
